@@ -5,14 +5,10 @@ import { Nav } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "bootstrap/dist/css/bootstrap.css";
-//import "./App.css";
-
-
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
 import ProductList from "./components/product/list.component";
-import EditUser from "./components/product/edit.component";
-import CreateProduct from "./components/product/create.component";
+
+
 
 function App() {
   return (
@@ -34,8 +30,6 @@ function App() {
           <Col md={12}>
             <Routes>
               <Route exact path="/" element={<ProductList />} />
-              <Route path="/product/edit/:id" element={<EditUser />} />
-              <Route path="/product/create" element={<CreateProduct />} />
             </Routes>
           </Col>
         </Row>
