@@ -1,102 +1,80 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button'
-import axios from 'axios';
-import Swal from 'sweetalert2'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./style/spanduk.css";
+import About from "./about";
+import Footer from "./Footer";
 
 export default function List() {
+  const [products, setProducts] = useState([]);
 
-    const [products, setProducts] = useState([])
+  useEffect(() => {
+    fetchProducts();
+  });
 
-    useEffect(()=>{
-        fetchProducts() 
-    })
+  const fetchProducts = async () => {
+    await axios.get(`http://localhost:8000/api/products`).then(({ data }) => {
+      setProducts(data);
+    });
+  };
 
-    const fetchProducts = async () => {
-        await axios.get(`http://localhost:8000/api/products`).then(({data})=>{
-            setProducts(data)
-        })
-    }
-
-    const deleteProduct = async (id) => {
-        const isConfirm = await Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
-            return result.isConfirmed
-          });
-
-          if(!isConfirm){
-            return;
-          }
-
-          await axios.delete(`http://localhost:8000/api/products/${id}`).then(({data})=>{
-            Swal.fire({
-                icon:"success",
-                text:data.message
-            })
-            fetchProducts()
-          }).catch(({response:{data}})=>{
-            Swal.fire({
-                text:data.message,
-                icon:"error"
-            })
-          })
-    }
-
-    return (
-      <div className="container">
-          <div className="row">
-            <div className='col-12'>
-                <Link className='btn btn-primary mb-2 float-end' to={"/product/create"}>
-                    Create Product
-                </Link>
-            </div>
-            <div className="col-12">
-                <div className="card card-body">
-                    <div className="table-responsive">
-                        <table className="table table-bordered mb-0 text-center">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Description</th>
-                                    <th>Image</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    products.length > 0 && (
-                                        products.map((row, key)=>(
-                                            <tr key={key}>
-                                                <td>{row.title}</td>
-                                                <td>{row.description}</td>
-                                                <td>
-                                                    <img width="50px" alt='' src={`http://localhost:8000/storage/product/image/${row.image}`} />
-                                                </td>
-                                                <td>
-                                                    <Link to={`/product/edit/${row.id}`} className='btn btn-success me-2'>
-                                                        Edit
-                                                    </Link>
-                                                    <Button variant="danger" onClick={()=>deleteProduct(row.id)}>
-                                                        Delete
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+  return (
+    
+    <div className="container">
+      <div className="row">
+        <div className="spanduk_nih">
+          <h3>Portofolio</h3>
+        </div>
+        <div className="row">
+            <div className="col-sm-12">
+              <div className="title-box text-center">
+                <h3 className="title-a">RECENT WORKS</h3>
+                
+                <div className="line-mf"></div>
+              </div>
             </div>
           </div>
+          <div className="row toh">
+        
+        {products.length > 0 &&
+          products.map((row, key) => (
+            <div className="col-sm-12 col-md-6 col-lg-4" key={key}>
+              <div className="work-box">
+                <a href={`http://localhost:8000/storage/product/image/${row.image}`} data-lightbox="gallery-vmarine">
+                  <div className="work-img">
+                    <img src={`http://localhost:8000/storage/product/image/${row.image}`} alt="" className="img-fluid" />
+                  </div>
+                  <div className="work-content">
+                    <div className="row">
+                      <div className="col-sm-8">
+                        <h2 className="w-title">{row.title}</h2>
+                        <div className="w-more">
+                          <span className="w-ctegory">
+                            {row.description}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col-sm-4">
+                        <div className="w-like">
+                          <span className="ion-ios-plus-outline"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          ))}
+          </div>
+           
+      
+
+        <div className="con ten">
+          <About />
+        </div>
+        <div>
+          <Footer />
+        </div>
       </div>
-    )
+    </div>
+  );
 }

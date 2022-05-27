@@ -1,0 +1,29 @@
+.spanduk_nih {
+    background-image: url(../stock.png);
+    height: 250px;
+    margin: 20px;
+}
+
+.con {
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.toh {
+    margin: 20px;
+}
+
+.konten {
+    margin: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.ten {
+    margin: 20px;
+    padding: 20px;
+}
